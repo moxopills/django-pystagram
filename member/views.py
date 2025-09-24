@@ -51,7 +51,7 @@ def verify_email(request):
 class LoginView(FormView):
     template_name = 'auth/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('main')
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         user = form.user
