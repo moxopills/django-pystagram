@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import json
 from pathlib import Path
 
-from django.conf.global_settings import EMAIL_HOST_USER
+from django.conf.global_settings import EMAIL_HOST_USER, MEDIA_URL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'member',
+    'post',
     'django_extensions',
 ]
 
@@ -124,7 +125,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+#static
+STATIC_URL = '/static/'
 
 STATIC_DIR = BASE_DIR / 'static'
 
@@ -132,7 +134,11 @@ STATICFILES_DIRS = [
     STATIC_DIR,
 ]
 
-STATIC_ROOT = BASE_DIR / 'static_root'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+#Media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
