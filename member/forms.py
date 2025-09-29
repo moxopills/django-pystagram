@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 
-class SingupForm(UserCreationForm):
+class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in ('password1','password2'):

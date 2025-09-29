@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from config import settings
 from member import views as member_views
 from django.contrib.auth.views import LogoutView
@@ -24,14 +24,24 @@ from post import views as post_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     #post
     path('',post_views.PostListView.as_view(),name='main'),
-    path('create/', post_views.PostCreateView.as_view(),name='post_create'),
+    path('create/', post_views.PostCreateView.as_view(),name='create'),
+    path('<int:pk>/update/', post_views.PostUpdateView.as_view(),name='update'),
+
+    #like
+    path('like/', post_views.toggle_like, name='toggle_like'),
+
     #auth
     path('signup/',member_views.SignupView.as_view(), name='signup'),
     path('verify/', member_views.verify_email, name='verify_email'),
     path('login/', member_views.LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+
+    #include
+    path('comment/', include('post.comment_urls')),
+    path('profile/', include('member.urls')),
 
 ]
 

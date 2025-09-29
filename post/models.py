@@ -1,5 +1,10 @@
+import re
+
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import pre_save,post_save
+
 from utils.models import TimestampModel
 
 User = get_user_model()
@@ -53,3 +58,25 @@ class Comment(TimestampModel):
 
     def __str__(self):
         return f'[comment]{self.post} | {self.user}'
+
+class Like(TimestampModel):
+    post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User,  related_name='likes', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'[like] {self.post} | {self.user}'
+
+@receiver(post_save, sender=Post)
+def post_post_save(sender , instance, created, **kwargs):
+    hashtags = re.findall(r'#(\w{1,100})(?=\s|$)', instance.content)
+
+    instance.tags.clear()
+
+    if hashtags:
+        tags = [
+            Tag.objects.get_or_create(tag = hashtag)
+            for hashtag in hashtags
+        ]
+        tags =[tag for tag, _ in tags]
+
+        instance.tags.add(*tags)
